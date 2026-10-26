@@ -1,8 +1,10 @@
 package example.com.server.controller;
 
+import example.com.server.DTOs.UsuarioRequestDTO;
 import example.com.server.Utils.APIResponse;
 import example.com.server.entity.Usuarios;
 import example.com.server.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +28,14 @@ public class UsuarioController {
     }
 
     @PostMapping("")
-    public ResponseEntity<APIResponse>create(@RequestBody Usuarios payload){
+    public ResponseEntity<APIResponse>create(@Valid @RequestBody UsuarioRequestDTO payload){
         APIResponse response = service.Create(payload);
         return new ResponseEntity<>(response, response.getStatus());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<APIResponse>update(@PathVariable Long id, @RequestBody Usuarios payload){
-        APIResponse response = service.Create(payload);
+        APIResponse response = service.Update(payload,id);
         return new ResponseEntity<>(response, response.getStatus());
     }
 

@@ -1,5 +1,6 @@
 package example.com.server.service;
 
+import example.com.server.DTOs.UsuarioRequestDTO;
 import example.com.server.Utils.APIResponse;
 import example.com.server.entity.Usuarios;
 import example.com.server.repository.UsuarioRepository;
@@ -17,10 +18,10 @@ public class UsuarioService {
     public APIResponse FindAll (){
         try {
             List<Usuarios> listUsuarios = usuarioRepository.findAll();
-            return new APIResponse( listUsuarios, false, "Mensaje generico", HttpStatus.OK);
+            return new APIResponse( listUsuarios, false, "Operacion Exitosa", HttpStatus.OK);
         }catch (Exception ex) {
             ex.printStackTrace();
-            return new APIResponse(true, "Operacion Exitosa", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new APIResponse(true, "Ha ocurrido un error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -37,9 +38,13 @@ public class UsuarioService {
         }
     }
 
-    public APIResponse Create(Usuarios usuario){
+    public APIResponse Create(UsuarioRequestDTO usuario){
         try {
-            usuarioRepository.save(usuario);
+            Usuarios u = new Usuarios();
+            u.setNombre(usuario.getNombre());
+            u.setUsuario(usuario.getUsuario());
+            u.setPassword(usuario.getPassword());
+            usuarioRepository.save(u);
             return new APIResponse( false, "Operacion exitosa", HttpStatus.CREATED);
         }catch (Exception ex) {
             ex.printStackTrace();
